@@ -17,12 +17,11 @@ RUN sed -ri 's/^UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config
 
 RUN /etc/init.d/sshd start
 
-#RUN passwd -l root
-RUN echo 'root:root' | chpasswd
+RUN sed -ri 's/^(root):[^:]*:(.*)$/\1:*:\2/' /etc/shadow
 
-#RUN ssh-keygen -f ~root/.ssh/id_rsa -t rsa -b 2048 -N ''
-#RUN cp ~root/.ssh/id_rsa.pub ~root/.ssh/authorized_keys
-#RUN chmod 0600 ~root/.ssh/authorized_keys
+RUN ssh-keygen -f ~root/.ssh/id_rsa -t rsa -b 2048 -N ''
+RUN cp ~root/.ssh/id_rsa.pub ~root/.ssh/authorized_keys
+RUN chmod 0600 ~root/.ssh/authorized_keys
 
 EXPOSE 22
 
